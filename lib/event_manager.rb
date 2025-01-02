@@ -26,7 +26,7 @@ contents.each do |row|
       levels: 'country',
       roles: %w[legislatorUpperBody legislatorLowerBody]
     )
-    legislators = legislators.officials
+    legislators = legislators.officials.map(&:name).join(', ')
   rescue StandardError
     legislators = 'You can find your representatives by visiting ' \
                   'www.commoncause.org/take-action/find-elected-officials'
