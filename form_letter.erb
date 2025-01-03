@@ -6,6 +6,12 @@
 </head>
 <body>
   <h1>Thanks <%= name %></h1>
+  <% if phone == 'Invalid' %>
+  <p>You have entered an invalid number. Please enter a real number for future events</p>
+  <% else %>
+    <p>You registered using <%= phone %>. We have stored your number for future events</p>
+  <% end %>
+
   <p>Thanks for coming to our conference.  We couldn't have done it without you!</p>
 
   <p>
