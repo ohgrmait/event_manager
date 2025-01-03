@@ -1,5 +1,6 @@
 require 'csv'
 require 'google-apis-civicinfo_v2'
+require 'erb'
 
 def clean_zipcode(zipcode)
   zipcode.to_s.rjust(5, '0')[0..4]
@@ -15,7 +16,7 @@ def legislators_by_zipcode(zipcode)
       levels: 'country',
       roles: %w[legislatorUpperBody legislatorLowerBody]
     )
-    legislators.officials.map(&:name).join(', ')
+    legislators.officials
   rescue StandardError
     'You can find your representatives by visiting ' \
     'www.commoncause.org/take-action/find-elected-officials'
@@ -30,7 +31,8 @@ contents = CSV.open(
   header_converters: :symbol
 )
 
-template_letter = File.read('form_letter.html')
+template_letter = File.read('form_letter.erb')
+erb_template = ERB.new template_letter
 
 contents.each do |row|
   name = row[:first_name]
@@ -39,8 +41,6 @@ contents.each do |row|
 
   legislators = legislators_by_zipcode(zipcode)
 
-  personal_letter = template_letter.gsub('FIRST_NAME', name)
-  personal_letter = personal_letter.gsub('LEGISLATORS', legislators)
-
-  puts "#{name}, #{zipcode}, #{legislators}"
+  form_letter = erb_template.result(binding)
+  puts form_letter
 end
