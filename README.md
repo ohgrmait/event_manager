@@ -15,7 +15,6 @@
 - ***Ruby***
 - ***HTML***
 - ***GitHub***
-- ***GitHub Pages***
 
 ## Setup & Usage
 
